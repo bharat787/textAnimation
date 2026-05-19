@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="hi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>भरत</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <main class="stage" aria-label="Animated greeting">
+      <div class="grid" aria-hidden="true">
+        <span class="grid__major"></span>
+        <span class="grid__fine"></span>
+      </div>
+
+      <div class="frame-marks" aria-hidden="true">
+        <span class="frame-marks__corner frame-marks__corner--tl"></span>
+        <span class="frame-marks__corner frame-marks__corner--tr"></span>
+        <span class="frame-marks__corner frame-marks__corner--bl"></span>
+        <span class="frame-marks__corner frame-marks__corner--br"></span>
+      </div>
+
+      <h1 class="hello">
+        <span class="hello__text" aria-label="भरत">
+          <span class="word word--stroke" aria-hidden="true">भरत</span>
+          <span class="word word--fill">भरत</span>
+        </span>
+      </h1>
+
+      <p class="hint">Tap or press space to replay</p>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #070d18;
+  --blueprint-line: rgba(96, 196, 255, 0.55);
+  --blueprint-line-dim: rgba(96, 196, 255, 0.18);
+  --blueprint-major: rgba(96, 196, 255, 0.28);
+  --text-fill: #f5f5f7;
+  --text-dim: #6e7f94;
+  --stroke-width: 2px;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  font-family: "Noto Sans Devanagari", system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text-fill);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100dvh;
+  padding: 2rem;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.grid {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.grid__fine,
+.grid__major {
+  position: absolute;
+  inset: 0;
+}
+
+.grid__fine {
+  background-image:
+    linear-gradient(var(--blueprint-line-dim) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blueprint-line-dim) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+.grid__major {
+  background-image:
+    linear-gradient(var(--blueprint-major) 1px, transparent 1px),
+    linear-gradient(90deg, var(--blueprint-major) 1px, transparent 1px);
+  background-size: 120px 120px;
+}
+
+.frame-marks {
+  position: fixed;
+  inset: 2rem;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+}
+
+.frame-marks__corner {
+  position: absolute;
+  width: 28px;
+  height: 28px;
+  border-color: var(--blueprint-line);
+  border-style: solid;
+  opacity: 0.7;
+}
+
+.frame-marks__corner--tl {
+  top: 0;
+  left: 0;
+  border-width: 2px 0 0 2px;
+}
+
+.frame-marks__corner--tr {
+  top: 0;
+  right: 0;
+  border-width: 2px 2px 0 0;
+}
+
+.frame-marks__corner--bl {
+  bottom: 0;
+  left: 0;
+  border-width: 0 0 2px 2px;
+}
+
+.frame-marks__corner--br {
+  bottom: 0;
+  right: 0;
+  border-width: 0 2px 2px 0;
+}
+
+.hello {
+  position: relative;
+  z-index: 2;
+  font-size: clamp(4.5rem, 18vw, 11rem);
+  font-weight: 600;
+  line-height: 1.1;
+  text-align: center;
+  user-select: none;
+}
+
+/* Single unified word — keeps Devanagari shaping & shirorekha connected */
+.hello__text {
+  position: relative;
+  display: inline-block;
+}
+
+.word {
+  display: block;
+  white-space: nowrap;
+  letter-spacing: 0;
+  font: inherit;
+  line-height: 1;
+}
+
+.word--stroke {
+  color: transparent;
+  -webkit-text-stroke: var(--stroke-width) var(--blueprint-line);
+  paint-order: stroke fill;
+  clip-path: inset(0 100% 0 0);
+}
+
+.word--fill {
+  position: absolute;
+  inset: 0;
+  color: var(--text-fill);
+  -webkit-text-stroke: 0 transparent;
+  clip-path: inset(0 100% 0 0);
+}
+
+.hint {
+  position: fixed;
+  z-index: 3;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.8125rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  letter-spacing: 0.01em;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.hint.is-visible {
+  opacity: 0.7;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .grid,
+  .frame-marks {
+    opacity: 0.25;
+  }
+
+  .word--stroke {
+    opacity: 0;
+    clip-path: inset(0 0 0 0);
+  }
+
+  .word--fill {
+    clip-path: inset(0 0 0 0);
+  }
+}
