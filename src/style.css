@@ -17,6 +17,7 @@
   --text-dim: #6a94c8;
   --stroke-width: 1.5px;
   --inset: clamp(2rem, 5vw, 4rem);
+  --font-devanagari: "Noto Serif Devanagari", "Noto Sans Devanagari", serif;
 }
 
 html,
@@ -87,15 +88,22 @@ body {
 
 .hello {
   position: relative;
-  font-family: "Noto Sans Devanagari", system-ui, sans-serif;
+  font-family: var(--font-devanagari);
   font-size: clamp(2rem, 8vw, 5rem);
   font-weight: 600;
   line-height: 1;
   user-select: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
 .intro.is-settled .hello {
-  font-size: clamp(1.25rem, 4vw, 2.75rem);
+  font-size: clamp(1rem, 3.25vw, 2.25rem);
+  font-weight: 500;
+}
+
+.intro.is-settled .word--stroke {
+  -webkit-text-stroke-width: 1.15px;
 }
 
 .hello__text {
@@ -160,7 +168,12 @@ body {
   }
 
   .intro.is-settled .hello {
-    font-size: clamp(1.25rem, 4vw, 2.75rem);
+    font-size: clamp(1rem, 3.25vw, 2.25rem);
+    font-weight: 500;
+  }
+
+  .intro.is-settled .word--stroke {
+    -webkit-text-stroke-width: 1.15px;
   }
 
   .grid {
