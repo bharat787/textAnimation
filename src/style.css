@@ -16,6 +16,7 @@
   --text-fill: var(--blueprint-ink);
   --text-dim: #6a94c8;
   --stroke-width: 1.5px;
+  --stroke-clip-bleed: 3px;
   --inset: clamp(2rem, 5vw, 4rem);
   --font-devanagari: "Noto Serif Devanagari", "Noto Sans Devanagari", serif;
 }
@@ -125,6 +126,7 @@ body {
   color: transparent;
   -webkit-text-stroke: var(--stroke-width) var(--blueprint-ink);
   paint-order: stroke fill;
+  padding-right: var(--stroke-clip-bleed);
   clip-path: inset(0 100% 0 0);
 }
 
