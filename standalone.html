@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="hi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bharat · भरत</title>
+    <title>भरत</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,28 +13,14 @@
     <link rel="stylesheet" href="./src/style.css" />
   </head>
   <body>
-    <main class="stage" aria-label="Animated greeting">
+    <main class="stage stage--centering" aria-label="Animated greeting">
       <div class="grid" aria-hidden="true">
         <span class="grid__major"></span>
         <span class="grid__fine"></span>
       </div>
 
-      <div class="frame-marks" aria-hidden="true">
-        <span class="frame-marks__corner frame-marks__corner--tl"></span>
-        <span class="frame-marks__corner frame-marks__corner--tr"></span>
-        <span class="frame-marks__corner frame-marks__corner--bl"></span>
-        <span class="frame-marks__corner frame-marks__corner--br"></span>
-      </div>
-
-      <div class="labels">
-        <h1 class="hello hello--en">
-          <span class="hello__text" aria-label="Bharat">
-            <span class="word word--stroke" aria-hidden="true">Bharat</span>
-            <span class="word word--fill">Bharat</span>
-          </span>
-        </h1>
-
-        <h1 class="hello hello--hi">
+      <div class="intro">
+        <h1 class="hello">
           <span class="hello__text" aria-label="भरत">
             <span class="word word--stroke" aria-hidden="true">भरत</span>
             <span class="word word--fill">भरत</span>
@@ -45,6 +31,6 @@
       <p class="hint">Tap or press space to replay</p>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
-    <script type="module" src="/src/main.js"></script>
+    <script type="module" src="./src/main.js"></script>
   </body>
 </html>

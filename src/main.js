@@ -6,17 +6,13 @@ const CLIP_FULL = "inset(0 0% 0 0)";
 
 function init() {
   const grid = document.querySelector(".grid");
-  const frameMarks = document.querySelector(".frame-marks");
-  const labels = document.querySelector(".labels");
-  const helloEn = document.querySelector(".hello--en");
-  const helloHi = document.querySelector(".hello--hi");
-  const hellos = [helloEn, helloHi].filter(Boolean);
-  const wordStrokes = gsap.utils.toArray(".word--stroke");
-  const wordFills = gsap.utils.toArray(".word--fill");
+  const intro = document.querySelector(".intro");
+  const wordStroke = document.querySelector(".word--stroke");
+  const wordFill = document.querySelector(".word--fill");
   const stage = document.querySelector(".stage");
   const hint = document.querySelector(".hint");
 
-  if (!grid || !labels || !hellos.length || !wordStrokes.length || !stage) {
+  if (!grid || !intro || !wordStroke || !wordFill || !stage) {
     console.error("Missing blueprint animation elements");
     return;
   }
@@ -24,55 +20,51 @@ function init() {
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
   function resetLayout() {
-    labels.classList.remove("is-settled");
-    gsap.set(hellos, { clearProps: "transform" });
+    stage.classList.add("stage--centering");
+    intro.classList.remove("is-settled");
   }
 
   function settleLayout() {
-    labels.classList.add("is-settled");
-    gsap.set(hellos, { clearProps: "transform" });
+    stage.classList.remove("stage--centering");
+    intro.classList.add("is-settled");
   }
 
-  function glideToCorners() {
-    const starts = hellos.map((el) => el.getBoundingClientRect());
+  function showFilledState() {
+    gsap.set(wordStroke, { clipPath: CLIP_FULL, opacity: 1 });
+    gsap.set(wordFill, { clipPath: CLIP_FULL });
+  }
 
-    labels.classList.add("is-settled");
-    const ends = hellos.map((el) => el.getBoundingClientRect());
-    labels.classList.remove("is-settled");
+  function fadeInAtCorner() {
+    const tl = gsap.timeline();
 
-    hellos.forEach((el, i) => {
-      gsap.set(el, {
-        x: starts[i].left - ends[i].left,
-        y: starts[i].top - ends[i].top,
-      });
+    tl.to(intro, { opacity: 0, duration: 0.45, ease: "power2.in" });
+
+    tl.call(() => {
+      settleLayout();
+      showFilledState();
+      gsap.set(intro, { opacity: 0 });
     });
 
-    labels.classList.add("is-settled");
+    tl.to(intro, { opacity: 1, duration: 0.65, ease: "power2.out" });
 
-    return gsap.to(hellos, {
-      x: 0,
-      y: 0,
-      duration: 1.35,
-      ease: "power3.inOut",
-    });
+    return tl;
   }
 
   function reset() {
-    gsap.killTweensOf([grid, frameMarks, labels, ...hellos, ...wordStrokes, ...wordFills]);
+    gsap.killTweensOf([grid, intro, wordStroke, wordFill]);
     resetLayout();
     gsap.set(grid, { opacity: 0, scale: 1.02 });
-    gsap.set(frameMarks, { opacity: 0 });
-    gsap.set(wordStrokes, { clipPath: CLIP_HIDDEN, opacity: 1 });
-    gsap.set(wordFills, { clipPath: CLIP_HIDDEN });
+    gsap.set(intro, { opacity: 1 });
+    gsap.set(wordStroke, { clipPath: CLIP_HIDDEN, opacity: 1 });
+    gsap.set(wordFill, { clipPath: CLIP_HIDDEN });
     hint?.classList.remove("is-visible");
   }
 
   function showFinal() {
-    gsap.set(grid, { opacity: 0 });
-    gsap.set(frameMarks, { opacity: 0 });
-    gsap.set(wordStrokes, { opacity: 0, clipPath: CLIP_FULL });
-    gsap.set(wordFills, { clipPath: CLIP_FULL });
+    gsap.set(grid, { opacity: 1, scale: 1 });
+    showFilledState();
     settleLayout();
+    gsap.set(intro, { opacity: 1 });
     hint?.classList.add("is-visible");
   }
 
@@ -85,34 +77,31 @@ function init() {
     }
 
     const tl = gsap.timeline({
-      defaults: { ease: "power2.inOut" },
       onComplete: () => hint?.classList.add("is-visible"),
     });
 
-    tl.to(grid, { opacity: 1, scale: 1, duration: 1.1, ease: "power2.out" })
-      .to(frameMarks, { opacity: 1, duration: 0.7 }, "<0.25");
+    tl.to(grid, { opacity: 1, scale: 1, duration: 1.1, ease: "power2.out" });
 
-    tl.to(wordStrokes, {
+    // Step 1: stencil (left → right)
+    tl.to(wordStroke, {
       clipPath: CLIP_FULL,
       duration: 1.15,
       ease: "power3.inOut",
     });
 
-    tl.to(
-      wordFills,
-      {
-        clipPath: CLIP_FULL,
-        duration: 1.2,
-        ease: "power4.inOut",
-      },
-      "-=0.35"
-    );
+    tl.to({}, { duration: 0.25 });
 
-    tl.to(wordStrokes, { opacity: 0, duration: 0.45 }, "-=0.55");
+    // Step 2: fill (left → right)
+    tl.to(wordFill, {
+      clipPath: CLIP_FULL,
+      duration: 1.2,
+      ease: "power4.inOut",
+    });
 
-    tl.to([grid, frameMarks], { opacity: 0, duration: 1.15, ease: "power2.inOut" }, "-=0.3");
+    tl.to({}, { duration: 0.2 });
 
-    tl.add(glideToCorners(), "+=0.15");
+    // Steps 3–4: fade out center, fade in at bottom right (filled, smaller)
+    tl.add(fadeInAtCorner());
 
     return tl;
   }

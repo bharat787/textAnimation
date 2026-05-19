@@ -9,13 +9,13 @@
 :root {
   color-scheme: light;
   --bg: #ffffff;
-  --blueprint-ink: #1a5f9e;
-  --blueprint-line: rgba(26, 95, 158, 0.45);
-  --blueprint-line-dim: rgba(26, 95, 158, 0.1);
-  --blueprint-major: rgba(26, 95, 158, 0.2);
+  --blueprint-ink: #4493f8;
+  --blueprint-line: rgba(68, 147, 248, 0.45);
+  --blueprint-line-dim: rgba(68, 147, 248, 0.1);
+  --blueprint-major: rgba(68, 147, 248, 0.2);
   --text-fill: var(--blueprint-ink);
-  --text-dim: #5a7a94;
-  --stroke-width: 2px;
+  --text-dim: #6a94c8;
+  --stroke-width: 1.5px;
   --inset: clamp(2rem, 5vw, 4rem);
 }
 
@@ -37,6 +37,12 @@ body {
   padding: var(--inset);
   cursor: pointer;
   isolation: isolate;
+}
+
+.stage--centering {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .grid {
@@ -67,90 +73,29 @@ body {
   background-size: 120px 120px;
 }
 
-.frame-marks {
-  position: fixed;
-  inset: var(--inset);
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-}
-
-.frame-marks__corner {
-  position: absolute;
-  width: 28px;
-  height: 28px;
-  border-color: var(--blueprint-ink);
-  border-style: solid;
-  opacity: 0.55;
-}
-
-.frame-marks__corner--tl {
-  top: 0;
-  left: 0;
-  border-width: 2px 0 0 2px;
-}
-
-.frame-marks__corner--tr {
-  top: 0;
-  right: 0;
-  border-width: 2px 2px 0 0;
-}
-
-.frame-marks__corner--bl {
-  bottom: 0;
-  left: 0;
-  border-width: 0 0 2px 2px;
-}
-
-.frame-marks__corner--br {
-  bottom: 0;
-  right: 0;
-  border-width: 0 2px 2px 0;
-}
-
-/* Start: stacked center (English above Hindi) */
-.labels {
-  position: absolute;
+.intro {
+  position: relative;
   z-index: 2;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.35em;
   width: max-content;
 }
 
-/* End: bottom row (Bharat left, भरत right) */
-.labels.is-settled {
-  top: auto;
+.intro.is-settled {
+  position: absolute;
   bottom: 0;
-  left: 0;
   right: 0;
-  transform: none;
-  width: 100%;
-  flex-direction: row;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 1.5rem;
 }
 
 .hello {
   position: relative;
-  font-size: clamp(1.75rem, 5vw, 4rem);
+  font-family: "Noto Sans Devanagari", system-ui, sans-serif;
+  font-size: clamp(2rem, 8vw, 5rem);
   font-weight: 600;
   line-height: 1;
   user-select: none;
-  will-change: transform;
 }
 
-.hello--en {
-  font-family: system-ui, -apple-system, "Segoe UI", "Helvetica Neue", sans-serif;
-}
-
-.hello--hi {
-  font-family: "Noto Sans Devanagari", system-ui, sans-serif;
+.intro.is-settled .hello {
+  font-size: clamp(1.25rem, 4vw, 2.75rem);
 }
 
 .hello__text {
@@ -167,6 +112,8 @@ body {
 }
 
 .word--stroke {
+  position: relative;
+  z-index: 1;
   color: transparent;
   -webkit-text-stroke: var(--stroke-width) var(--blueprint-ink);
   paint-order: stroke fill;
@@ -176,6 +123,7 @@ body {
 .word--fill {
   position: absolute;
   inset: 0;
+  z-index: 0;
   color: var(--text-fill);
   -webkit-text-stroke: 0 transparent;
   clip-path: inset(0 100% 0 0);
@@ -201,25 +149,26 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .labels {
-    top: auto;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    transform: none;
-    width: 100%;
-    flex-direction: row;
-    align-items: baseline;
-    justify-content: space-between;
+  .stage--centering {
+    display: block;
   }
 
-  .grid,
-  .frame-marks {
-    opacity: 0.25;
+  .intro {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+  }
+
+  .intro.is-settled .hello {
+    font-size: clamp(1.25rem, 4vw, 2.75rem);
+  }
+
+  .grid {
+    opacity: 1;
   }
 
   .word--stroke {
-    opacity: 0;
+    opacity: 1;
     clip-path: inset(0 0 0 0);
   }
 
