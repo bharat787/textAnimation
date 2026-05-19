@@ -7,13 +7,14 @@
 }
 
 :root {
-  color-scheme: dark;
-  --bg: #070d18;
-  --blueprint-line: rgba(96, 196, 255, 0.55);
-  --blueprint-line-dim: rgba(96, 196, 255, 0.18);
-  --blueprint-major: rgba(96, 196, 255, 0.28);
-  --text-fill: #f5f5f7;
-  --text-dim: #6e7f94;
+  color-scheme: light;
+  --bg: #ffffff;
+  --blueprint-ink: #1a5f9e;
+  --blueprint-line: rgba(26, 95, 158, 0.45);
+  --blueprint-line-dim: rgba(26, 95, 158, 0.1);
+  --blueprint-major: rgba(26, 95, 158, 0.2);
+  --text-fill: var(--blueprint-ink);
+  --text-dim: #5a7a94;
   --stroke-width: 2px;
   --inset: clamp(2rem, 5vw, 4rem);
 }
@@ -32,8 +33,6 @@ body {
 
 .stage {
   position: relative;
-  display: flex;
-  flex-direction: column;
   min-height: 100dvh;
   padding: var(--inset);
   cursor: pointer;
@@ -80,9 +79,9 @@ body {
   position: absolute;
   width: 28px;
   height: 28px;
-  border-color: var(--blueprint-line);
+  border-color: var(--blueprint-ink);
   border-style: solid;
-  opacity: 0.7;
+  opacity: 0.55;
 }
 
 .frame-marks__corner--tl {
@@ -109,15 +108,32 @@ body {
   border-width: 0 2px 2px 0;
 }
 
+/* Start: stacked center (English above Hindi) */
 .labels {
-  position: relative;
+  position: absolute;
   z-index: 2;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35em;
+  width: max-content;
+}
+
+/* End: bottom row (Bharat left, भरत right) */
+.labels.is-settled {
+  top: auto;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  transform: none;
+  width: 100%;
+  flex-direction: row;
   align-items: baseline;
   justify-content: space-between;
   gap: 1.5rem;
-  width: 100%;
-  margin-top: auto;
 }
 
 .hello {
@@ -126,6 +142,7 @@ body {
   font-weight: 600;
   line-height: 1;
   user-select: none;
+  will-change: transform;
 }
 
 .hello--en {
@@ -151,7 +168,7 @@ body {
 
 .word--stroke {
   color: transparent;
-  -webkit-text-stroke: var(--stroke-width) var(--blueprint-line);
+  -webkit-text-stroke: var(--stroke-width) var(--blueprint-ink);
   paint-order: stroke fill;
   clip-path: inset(0 100% 0 0);
 }
@@ -184,6 +201,18 @@ body {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .labels {
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    transform: none;
+    width: 100%;
+    flex-direction: row;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
   .grid,
   .frame-marks {
     opacity: 0.25;
